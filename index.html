@@ -66,6 +66,7 @@
   .card .body { padding: 12px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
   .card .price { font-size: 18px; font-weight: 700; }
   .card .addr { font-size: 13px; color: var(--muted); }
+  .card .added { font-size: 12px; color: var(--muted); }
   .badges { display: flex; flex-wrap: wrap; gap: 5px; }
   .badge { font-size: 11px; padding: 2px 7px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
   .badge.new { background: var(--new); color: #fff; }
@@ -88,7 +89,7 @@
 <header>
   <div class="wrap">
     <h1>Immo-monitor</h1>
-    <div class="meta">Bijgewerkt op 22-06-2026 20:52 - <strong>0 nieuw vandaag</strong> · 1725 totaal · <strong>253 buiten de grote portalen</strong> (87 met adres · 166 onbevestigd)</div>
+    <div class="meta">Bijgewerkt op 22-06-2026 20:57 - <strong>0 nieuw vandaag</strong> · 1725 totaal · <strong>253 buiten de grote portalen</strong> (87 met adres · 166 onbevestigd)</div>
     <div class="note">Standaard tonen we enkel nieuwe listings (laatste 24u). Zet de filter af om de volledige geschiedenis te zien.</div>
   </div>
 </header>
@@ -272,6 +273,15 @@
       badges.appendChild(badge("NIEUW", "new"));
     }
     body.appendChild(badges);
+
+    // Datum waarop de listing voor het eerst gevonden/gescraped is (fallback: laatst gezien).
+    var added = r.first_seen || r.last_seen;
+    if (added) {
+      var addedEl = document.createElement("div");
+      addedEl.className = "added";
+      addedEl.textContent = "Toegevoegd op " + fmtDate(added);
+      body.appendChild(addedEl);
+    }
 
     // Uncertain off-portal: off a big portal but no address -> probably also on
     // immoweb, just unmatched. Flag it so the spot-check shortlist stays honest.
